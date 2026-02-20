@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SYS.NEXUS // Terminal</title>
+    <style>
+        /* 引入科幻感字体 */
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Share+Tech+Mono&display=swap');
+
+        :root {
+            --primary-color: #0ff; /* 霓虹青色 */
+            --bg-color: #050505;
+            --panel-bg: rgba(0, 255, 255, 0.05);
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: var(--bg-color);
+            color: var(--primary-color);
+            font-family: 'Share Tech Mono', monospace;
+            /* 扫描网格背景 */
+            background-image: 
+                linear-gradient(rgba(0, 255, 255, 0.1) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 255, 255, 0.1) 1px, transparent 1px);
+            background-size: 30px 30px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        header {
+            margin-top: 60px;
+            text-align: center;
+            font-family: 'Orbitron', sans-serif;
+            text-shadow: 0 0 10px var(--primary-color);
+            letter-spacing: 4px;
+        }
+
+        h1 { margin: 0; font-size: 2.5rem; border-bottom: 2px solid var(--primary-color); padding-bottom: 10px;}
+        .subtitle { font-size: 1rem; opacity: 0.8; margin-top: 10px; animation: blink 2s infinite; }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
+        }
+
+        .dashboard {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            width: 80%;
+            max-width: 900px;
+            margin-top: 50px;
+        }
+
+        /* 终端面板UI */
+        .panel {
+            background: var(--panel-bg);
+            border: 1px solid var(--primary-color);
+            padding: 25px;
+            box-shadow: inset 0 0 15px rgba(0, 255, 255, 0.05), 0 0 10px rgba(0, 255, 255, 0.1);
+            position: relative;
+        }
+
+        /* 面板边角装饰 */
+        .panel::before {
+            content: ''; position: absolute; top: 0; left: 0; width: 15px; height: 15px;
+            border-top: 2px solid var(--primary-color); border-left: 2px solid var(--primary-color);
+        }
+        .panel::after {
+            content: ''; position: absolute; bottom: 0; right: 0; width: 15px; height: 15px;
+            border-bottom: 2px solid var(--primary-color); border-right: 2px solid var(--primary-color);
+        }
+
+        .nav-links a {
+            display: block;
+            color: var(--primary-color);
+            text-decoration: none;
+            margin: 12px 0;
+            padding: 10px;
+            border-left: 2px solid transparent;
+            transition: all 0.3s;
+            font-size: 1.1rem;
+        }
+
+        .nav-links a:hover {
+            border-color: var(--primary-color);
+            background: rgba(0, 255, 255, 0.1);
+            box-shadow: 0 0 15px rgba(0, 255, 255, 0.2);
+            padding-left: 20px;
+            text-shadow: 0 0 5px var(--primary-color);
+        }
+
+        /* 模拟状态条 */
+        .status-bar {
+            height: 8px; background: #111; margin: 8px 0 20px 0; border: 1px solid #333;
+        }
+        .status-fill {
+            height: 100%; background: var(--primary-color); width: 0%;
+            box-shadow: 0 0 10px var(--primary-color);
+            transition: width 1s ease-in-out;
+        }
+
+        #clock { font-size: 1.8rem; margin-bottom: 20px; color: #fff; text-shadow: 0 0 10px var(--primary-color); }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>SYS.NEXUS.CORE</h1>
+        <div class="subtitle">> ESTABLISHING SECURE CONNECTION...</div>
+    </header>
+
+    <div class="dashboard">
+        <div class="panel">
+            <h3>// SYSTEM_METRICS</h3>
+            <div id="clock">00:00:00</div>
+            
+            <div>CORE_LOAD_AVERAGE</div>
+            <div class="status-bar"><div class="status-fill" id="bar1"></div></div>
+            
+            <div>NETWORK_UPLINK</div>
+            <div class="status-bar"><div class="status-fill" id="bar2"></div></div>
+        </div>
+
+        <div class="panel nav-links">
+            <h3>// QUICK_LAUNCH</h3>
+            <a href="#">> DEV_WORKSPACE_01</a>
+            <a href="#">> SERVER_MONITOR_UI</a>
+            <a href="#">> DEPLOYMENT_CONSOLE</a>
+            <a href="#">> 3D_ASSETS_DATABASE</a>
+        </div>
+    </div>
+
+    <script>
+        // 科幻数字时钟
+        function updateClock() {
+            const now = new Date();
+            const timeStr = now.toLocaleTimeString('en-US', { hour12: false });
+            const ms = String(now.getMilliseconds()).padStart(3, '0').slice(0, 2);
+            document.getElementById('clock').innerText = `${timeStr}:${ms}`;
+        }
+        setInterval(updateClock, 50);
+
+        // 模拟状态条动态加载
+        setTimeout(() => {
+            document.getElementById('bar1').style.width = '42%';
+            document.getElementById('bar2').style.width = '88%';
+        }, 500);
+    </script>
+</body>
+</html>
